@@ -16,6 +16,30 @@ func main() {
 	fmt.Println("0- Sair do Programa")
 
 	var comando int
-	fmt.Scanf("%d", &comando)
+	fmt.Scan(&comando)
 	fmt.Println("O comando escolhido foi", comando)
+
+	// Condictional convenctional with if and else:
+	// 	if comando == 1 {
+	// 		fmt.Println("Monitorando...")
+	// 	} else if comando == 2 {
+	// 		fmt.Printf("Exibindo logs..")
+	// 	} else if comando == 0 {
+	// 		fmt.Printf("Saindo do programa")
+	// 	} else {
+	// 		fmt.Printf("Comando não existe como opção")
+	// 	}
+	// }
+
+	// Best pratic with switch for this case
+	switch comando {
+	case 1:
+		fmt.Println("Monitorando...")
+	case 2:
+		fmt.Println("Exibindo logs..")
+	case 0:
+		fmt.Println("Saindo do programa")
+	default:
+		fmt.Println("O comando digitado não corresponde as opções disponíveis.")
+	}
 }
