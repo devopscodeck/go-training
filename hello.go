@@ -2,17 +2,20 @@ package main
 
 import (
 	"fmt"
-	"reflect"
 )
 
 func main() {
 	var nome string = "Administrator"
 	var versao = 1.2
-	idade := 25
 
-	fmt.Println("Hello", nome, "sua idade é:", idade)
+	fmt.Println("Hello", nome)
 	fmt.Println("Este programa está na versão:", versao)
 
-	fmt.Println("O tipo da variável nome, é", reflect.TypeOf(nome))
-	fmt.Println("O tipo da variável versao, é", reflect.TypeOf(versao))
+	fmt.Println("1- Iniciar monitoramento")
+	fmt.Println("2- Exibir logs")
+	fmt.Println("0- Sair do Programa")
+
+	var comando int
+	fmt.Scanf("%d", &comando)
+	fmt.Println("O comando escolhido foi", comando)
 }
