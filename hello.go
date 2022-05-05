@@ -4,10 +4,15 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 )
+
+const monitoramentos = 3 //quantidade de sites monitorados
+const delay = 5          // tempo de espera para requisitar os sites novamente
 
 func main() {
 	exibeIntroducao()
+	fmt.Println("")
 	for {
 		exibeMenu()
 		comando := leComando()
@@ -55,13 +60,27 @@ func exibindoLogs() {
 
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando...")
-	site := "https://alura.com.br"
-	resp, _ := http.Get(site)
+	//a linha 59 refere-se a um slice (é um array por tras do capô)
+	sites := []string{"https://alura.com.br", "https://alura.com.br/dashboards", "https://alura.com.br/ddddd", "https://cursos.alura.com.br/course/golang/task/27970"}
 
+	//testa de 5 em 5 segundos
+	for i := 0; i < monitoramentos; i++ {
+		for i, site := range sites {
+			fmt.Println("testando site:", i, ":", site)
+			testaSite(site)
+		}
+		time.Sleep(delay * time.Second)
+		fmt.Println("")
+	}
+	fmt.Println("")
+}
+
+func testaSite(site string) {
+	resp, _ := http.Get(site)
 	if resp.StatusCode == 200 {
 		fmt.Println("Site:", site, "carregado com sucesso")
 	} else {
 		fmt.Println("Site:", site, "está com error: ", resp.StatusCode)
-
 	}
+
 }
