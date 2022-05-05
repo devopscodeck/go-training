@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -61,7 +64,8 @@ func exibindoLogs() {
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando...")
 	//a linha 59 refere-se a um slice (é um array por tras do capô)
-	sites := []string{"https://alura.com.br", "https://alura.com.br/dashboards", "https://alura.com.br/ddddd", "https://cursos.alura.com.br/course/golang/task/27970"}
+	//	sites := []string{"https://alura.com.br", "https://alura.com.br/dashboards", "https://alura.com.br/ddddd", "https://cursos.alura.com.br/course/golang/task/27970"}
+	sites := leSitesDoArquivo()
 
 	//testa de 5 em 5 segundos
 	for i := 0; i < monitoramentos; i++ {
@@ -76,11 +80,40 @@ func iniciarMonitoramento() {
 }
 
 func testaSite(site string) {
-	resp, _ := http.Get(site)
+	resp, err := http.Get(site)
+
+	if err != nil {
+		fmt.Print("Ocorreu um erro:", err)
+	}
+
 	if resp.StatusCode == 200 {
 		fmt.Println("Site:", site, "carregado com sucesso")
 	} else {
 		fmt.Println("Site:", site, "está com error: ", resp.StatusCode)
 	}
 
+}
+
+func leSitesDoArquivo() []string {
+
+	var sites []string
+	arquivo, err := os.Open("sites.txt")
+
+	if err != nil {
+		fmt.Println("Ocorreu um erro", err)
+	}
+
+	leitor := bufio.NewReader(arquivo)
+	for {
+		linha, err := leitor.ReadString('\n')
+		linha = strings.TrimSpace(linha)
+
+		sites = append(sites, linha)
+
+		if err == io.EOF {
+			break
+		}
+	}
+	arquivo.Close()
+	return sites
 }
